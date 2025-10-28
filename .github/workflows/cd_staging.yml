@@ -22,16 +22,18 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i ssh_key ubuntu@${{ secrets.SERVER_HOST }} "
             export NVM_DIR=\"/home/ubuntu/.nvm\"
             [ -s \"\$NVM_DIR/nvm.sh\" ] && . \"\$NVM_DIR/nvm.sh\"
-            cd learning-ci-cd-deployment &&
-            npm install -g pnpm &&
-            pnpm install &&
-            pnpm run build &&
-            pm2 restart fe-server ||
-            pm2 start apps/web --name fe-server --watch &&
-            pm2 restart http-server ||
-            pm2 start apps/http-server --name http-server --watch &&
-            pm2 restart ws-server ||
-            pm2 start apps/ws-server --name ws-server --watch
+
+            cd ~/learning-ci-cd-deployment
+
+            git pull
+
+            npm install -g pnpm
+            pnpm install
+
+            # ✅ build only web app
+            cd apps/web
+            pnpm run build
+
+            # ✅ restart only the correct app
+            pm2 restart fe-server || pm2 start 'pnpm run start' --name fe-server
           "
-
-
