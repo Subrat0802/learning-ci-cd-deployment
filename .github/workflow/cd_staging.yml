@@ -8,8 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     name: Deploy everything to the satging cluster
     steps:
-      - name: SSH into server
-      - run: |
+      name: SSH into server
+      run: |
           echo ${{ secrets.SSH_PRIVATE_KEY }} > ~/ssh_key
           chmod 600 ~/ssh_key
           ssh -i ~/ssh_key root@65.0.184.158 
