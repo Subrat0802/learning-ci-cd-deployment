@@ -1,28 +1,25 @@
 name: Deploy to staging
-
 on:
   push:
     branches: [ main ]
 
 jobs:
-  redeploy_everything:
+  deploy:
+    name: Deploy App to Staging
     runs-on: ubuntu-latest
-    name: Deploy everything to the staging cluster
 
     steps:
-      - name: Copy Repo
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup SSH
+      - name: Add SSH key
         run: |
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/ssh_key
-          chmod 600 ~/ssh_key
-          mkdir -p ~/.ssh
-          echo "${{ secrets.KNOWN_HOST }}" > ~/.ssh/known_hosts
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ssh_key
+          chmod 600 ssh_key
 
-      - name: SSH and deploy
+      - name: Deploy via SSH
         run: |
-          ssh -o StrictHostKeyChecking=yes -i ~/ssh_key root@65.0.184.158 "
+          ssh -o StrictHostKeyChecking=no -i ssh_key ubuntu@${{ secrets.SERVER_HOST }} "
             cd learning-ci-cd-deployment &&
             git pull &&
             pnpm install &&
