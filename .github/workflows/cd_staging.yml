@@ -11,7 +11,7 @@ jobs:
        - run: |
            echo "${{ secrets.SSH_PRIVATE_KEY }}" &> ~/ssh_key
            chmod 600 ~/ssh_key
-           ssh -i ~/ssh_key root@65.0.184.158 
+           echo "yes" | ssh -i ~/ssh_key root@65.0.184.158 
            cd learning-ci-cd-deployment && git pull &&
            pnpm install &&
            pnpm run build &&
