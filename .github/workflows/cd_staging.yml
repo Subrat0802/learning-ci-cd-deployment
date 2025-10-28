@@ -10,8 +10,10 @@ jobs:
     steps:
        - run: |
            echo "${{ secrets.SSH_PRIVATE_KEY }}" &> ~/ssh_key
-           mkdir .ssh
-           echo "${{ secrets.KNOWN_HOST }}" &> ~/.ssh/known_hosts
+           mkdir -p /home/runner/.ssh
+           ls /home/runner/.ssh
+           touch /home/runner/.ssh/known_hosts
+           echo "${{ secrets.KNOWN_HOST }}" &> /home/runner/.ssh/known_hosts
            chmod 600 ~/ssh_key
            ssh -i ~/ssh_key root@65.0.184.158 
            cd learning-ci-cd-deployment && git pull &&
