@@ -2,9 +2,10 @@ name: Deploy to staging
 on:
   push:
     branches:
-      - main
+      - "main"
 jobs:
   redeploy_everything:
+    runs-on: ubuntu-latest
     name: Deploy everything to the satging cluster
     steps:
       - name: SSH into server
