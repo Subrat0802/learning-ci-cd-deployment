@@ -10,8 +10,9 @@ jobs:
     steps:
        - run: |
            echo "${{ secrets.SSH_PRIVATE_KEY }}" &> ~/ssh_key
+           echo "${{ secrets.KNOWN_HOST }}" &> ~/.ssh/known_hosts
            chmod 600 ~/ssh_key
-           echo "yes" | ssh -i ~/ssh_key root@65.0.184.158 
+           ssh -i ~/ssh_key root@65.0.184.158 
            cd learning-ci-cd-deployment && git pull &&
            pnpm install &&
            pnpm run build &&
